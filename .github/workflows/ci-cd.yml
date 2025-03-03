@@ -1,0 +1,30 @@
+name: CI/CD Pipeline for Vite Project with Detailed Coverage Report
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    name: Run Tests, Generate Coverage & Build Project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests and generate coverage report
+        run: npm run test -- --coverage
+        # Nota: Asegúrate de tener configurado un script de test en package.json.
+        # Por ejemplo, si usas Vitest, el comando podría ser: "vitest run --coverage"
+
+      - name: Build project
+        run: npm run build
