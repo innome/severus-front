@@ -1,4 +1,4 @@
-name: CI/CD Pipeline for Vite Project with Detailed Coverage Report
+name: CI/CD Pipeline for Vite Project with Dev Server and Coverage
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    name: Run Tests, Generate Coverage & Build Project
+    name: Run Dev Server, Tests & Generate Coverage
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -21,10 +21,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests and generate coverage report
-        run: npm run test -- --coverage
-        # Nota: Asegúrate de tener configurado un script de test en package.json.
-        # Por ejemplo, si usas Vitest, el comando podría ser: "vitest run --coverage"
+      - name: Start dev server in background
+        run: |
+          nohup npm run dev > dev.log 2>&1 &
+          # Esperamos 10 segundos para que el servidor se inicie (ajusta el tiempo según sea necesario)
+          sleep 10
 
-      - name: Build project
-        run: npm run build
+      - name: Stop dev server
+        run: |
+          # Busca y mata el proceso que ejecuta el dev server
+          pkill -f "npm run dev"
