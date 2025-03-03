@@ -26,8 +26,3 @@ jobs:
           nohup npm run dev > dev.log 2>&1 &
           # Esperamos 10 segundos para que el servidor se inicie (ajusta el tiempo según sea necesario)
           sleep 10
-
-      - name: Stop dev server
-        run: |
-          # Busca y mata el proceso que ejecuta el dev server
-          pkill -f "npm run dev"
